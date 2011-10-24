@@ -2,4 +2,6 @@
 
 A Google Chrome extension that can be used on torrent sites to find info about movies and TV shows. By holding ALT and clicking on a link that has the format of a scene release (e.g. My.Movie.2003.PAL.DVDR-GROUP, or The.Show.S02E13.XVID-COOL) it will search a web API for info on it and display it in the form of a tooltip on the page.
 
+To use it open up Chrome extensions window, activate the "Developer mode" and click "Load unpacked extension" to load this. One day it might be in the Chrome store.
+
 Free for all.
