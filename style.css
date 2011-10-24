@@ -2,9 +2,18 @@ div.tooltip {
   width: 400px;
   background-color: #eee;
   border: 1px solid #ccc;
-  padding:5px;
+  padding:10px;
   position: absolute;
 }
 div.tooltip img {
-  max-width: 400px;
+  max-width: 300px;
+  max-height: 300px;
+}
+div.tooltip > div,
+div.tooltip > img
+{
+  margin: 10px;
+  display: block;
+  float: left;
+  clear: both;
 }

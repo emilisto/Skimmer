@@ -9,7 +9,7 @@
   }],
   "background_page": "background.html",
   "permissions": [
-    "tabs", "http://*/*", "http://www.thetvdb.com/",
-    "experimental", "privacy"
+    "tabs", "http://*/*", "http://www.thetvdb.com/"
+    //"experimental", "privacy"
   ]
 }

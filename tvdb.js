@@ -12,13 +12,11 @@
             var $first = $($(doc).find('Series').get(0))
 
             var data = {
-              language: $first.find('language').text(),
-              seriesname: $first.find('SeriesName').text(),
-              banner: banners + $first.find('banner').text(),
-              overview: $first.find('Overview').text()
+              title: $first.find('SeriesName').text(),
+              picture: banners + $first.find('banner').text(),
+              description: $first.find('Overview').text(),
+              link: 'http://www.imdb.com/title/' + $first.find('IMDB_ID').text()
             };
-
-            console.debug('-- got some: doc: %o, first: %o, data: %o', doc, $first, data);
 
             dfd.resolve(data);
           })
@@ -33,4 +31,39 @@
     
     _.bindAll(this);
   };    
+  this.IMDB = function( options ) {
+    var url =  'http://www.imdbapi.com/?plot=full&t=';
+    _.extend(this, {
+      find: function(name) {
+        var dfd = $.Deferred(),
+            uri = url + encodeURI(name);
+        
+        $.get(uri)
+          .done(function(resp) {
+            var data = $.parseJSON(resp);
+            // var $first = $($(doc).find('Series').get(0))
+            // 
+            var data = {
+              title: data.Title,
+              picture: data.Poster,
+              description: data.Plot,
+              rating: data.Rating,
+              link: 'http://www.imdb.com/title/' + data.ID
+            };
+            
+            console.debug('-- got some: doc: %o', data);
+
+            dfd.resolve(data);
+          })
+          .fail(function() {
+            console.debug('-- failed: %o', arguments);
+            dfd.reject();
+          });
+          
+        return dfd;
+      }
+    });
+    
+    _.bindAll(this);
+  };
 }());

@@ -52,24 +52,23 @@
         return textNodes;
       },
       _identify: function(texts) {
-        var re = new RegExp(/(.*)S\d{2}E\d{2}/i);
+        var re = new RegExp(/((.*)(S\d{2}E\d{2})|(.*))/i);
         var ret = {
           type: 'other'
         };
         var text = texts[0];
         if(text) {
-          var match = text.match(re)
-          if(match) {
-            if(match.length > 1) {            
-              ret = {
-                type: 'tvshow',
-                name: match[1]
-              };
-            } else {
-              ret = {
-                type: 'movie',
-                name: match[0]
-              };
+          var match = text.match(re);
+          console.debug('match: %o', match);
+          if(match[2]) {
+            ret = {
+             name: match[2],
+             type: 'tvshow' 
+            };
+          } else {
+            ret = {
+              name: match[1],
+              type: 'movie'
             }
           }
         }
@@ -107,7 +106,8 @@
             "top": pos.top - 100,
             "left": pos.left + 100
           })
-          .html(html)
+          .html('<div>' + html + '</div>')
+          .click(this.hideTooltip)
           .appendTo('body');
           
         this.tooltip = el;
@@ -116,7 +116,7 @@
         if(this.tooltip) {
           var self = this;
           setTimeout(function() {
-            self.tooltip.prepend($('<img/>').attr("src", url))
+            self.tooltip.append($('<img/>').attr("src", url))
           }, 1000);
           console.debug('adding image');
         }
@@ -130,34 +130,48 @@
   
     
   var skimmer = new Skimmer();
+  var imdb = new IMDB();
+  var tvdb = new TVDB();
   
   $('body').click(function(ev) {
     if(ev.altKey) {
       var data = skimmer.run(ev.target);
 
-      if(data.type === 'tvshow') {
-        var tvdb = new TVDB();
-        tvdb.find(data.name).then(function(data) {
-          
-          console.debug('running!');
-          chrome.extension.sendRequest({ url: data.banner }, function(response) {
-            if(response.loaded) {
-              skimmer.showImage(response.loaded);
-            } else {
-              console.debug('no image!');
-            }
-            //console.debug('response: %o', response);
-            
-          });
-          
-          var html = '<h2>' + data.seriesname + '</h2><p>' + data.overview + '</p>';
-          console.debug('data: %o html: %s', data, html);
-          skimmer.showTooltip(html, {
-            top: ev.pageY, left: ev.pageX
-          });
-          
+      console.debug('DATA: %o', data);
+      function callback(data) {
+        var html = '<h2><a href="' + data.link + '" target="_new">' + data.title + '</a></h2><p>' + data.description + '</p>';
+        if(data.rating) {
+          html += '<h3>' + data.rating + '</h3>';
+        }
+        
+        console.debug('data: %o html: %s', data, html);
+        skimmer.showTooltip(html, {
+          top: ev.pageY, left: ev.pageX
         });
+        
+        if(data.picture !== 'N/A') {
+          skimmer.showImage(data.picture);
+        }        
       }
+
+      if(data.type === 'tvshow') {
+        tvdb.find(data.name).then(callback);
+      } else if(data.type === 'movie') {
+        imdb.find(data.name).then(callback);
+      } else {
+        console.debug('cant find it');
+      }
+          
+          // console.debug('running: %o', data);
+          // chrome.extension.sendRequest({ url: data.banner }, function(response) {
+          //   if(response.loaded) {
+          //     skimmer.showImage(response.loaded);
+          //   } else {
+          //     console.debug('no image!');
+          //   }
+          //   //console.debug('response: %o', response);
+          //   
+          // });
       
       ev.preventDefault();
     }
