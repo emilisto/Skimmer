@@ -1,0 +1,41 @@
+<html>
+  <script>
+  
+    
+    chrome.extension.onRequest.addListener(
+      function(request, sender, sendResponse) {
+        // From content script 
+        if(sender.tab) {
+          if(request.url) {            
+            // var img = new Image();
+            // img.src = request.url;
+            // img.onload = function() {
+            // };
+            // img.onerror = function() {
+            //   sendResponse({ "loaded": null });
+            // };
+            
+            var pref = chrome.experimental.privacy.websites.referrersEnabled;
+            pref.set({'value': true});
+            
+            sendResponse({ "loaded": request.url });
+            
+            setTimeout(function() {
+              var pref = chrome.experimental.privacy.websites.referrersEnabled;
+              pref.set({'value': false});
+            });
+            
+          }
+          
+        }
+        
+        // console.log(sender.tab ?
+        //             "from a content script:" + sender.tab.url :
+        //             "from the extension");
+        // if (request.greeting == "hello")
+        //   sendResponse({farewell: "goodbye"});
+        // else
+        //   sendResponse({}); // snub them.
+      });
+  </script>
+</html>

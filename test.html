@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <script src="jquery.js"></script>
+    <script src="underscore.js"></script>
+    <script src="runner.js"></script>
+  </head>
+  <body>
+    <script>
+      var titles = ["Beginners.2010.LIMITED.BDRip.XviD-TARGET", "Drive.Angry.3D.2011.DVDRip.XviD-EXViD", "Mardi.Gras.Spring.Break.2011.PROPER.DVDRiP.XviD-DvF", "My.Afternoons.With.Margueritte.2010.BDRip.XviD-aAF", "Mardi.Gras.Spring.Break.DVDRip.XviD-iGNiTiON", "Robot.Chicken.S05E10.HDTV.XviD-2HD", "Lost.Girl.S02E06.REAL.HDTV.XviD-2HD", "Heartland.CA.S05E05.HDTV.XviD-2HD", "Storm.Chasers.S05E05.No.Rest.for.the.Weary.HDTV.XviD-M...", "Art.Mann.Presents.Del.Mar.Opening.Day.URATED.HDTV.XviD...", "Sister.Wives.S02E17.HDTV.XviD-URTV", "China.IL.S01E04.HDTV.XviD-2HD", "IRT.Deadliest.Roads.S02E05.Death.Race.HDTV.XviD-MOMENTUM", "Talking.Dead.S01E02.Bloodletting.HDTV.XviD-FQM", "Homeland.S01E04.HDTV.XviD-ASAP", "Wicked.Fit.S01E01.Get.Fit.Or.Get.Out.HDTV.XviD-PREMiER", "Against.the.Wall.S01E13.HDTV.XviD-ASAP", "How.to.Make.It.in.America.S02E04.HDTV.XviD-ASAP", "Long.Island.Medium.S01E07.HDTV.XviD-URTV"];
+      
+      var skimmer = new Skimmer();
+      var names = _.map(titles, skimmer._extractName);
+              
+      var groups = skimmer._group(names);
+      console.debug(groups);
+      
+    </script>
+  </body>
+</html>

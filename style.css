@@ -1,0 +1,10 @@
+div.tooltip {
+  width: 400px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  padding:5px;
+  position: absolute;
+}
+div.tooltip img {
+  max-width: 400px;
+}

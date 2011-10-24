@@ -1,0 +1,15 @@
+{
+  "name": "Skimmer",
+  "version": "1.0",
+  "description": "Extract TV show and movie scene releases from web pages and show summary info for them",
+  "content_scripts": [{
+    "matches": ["http://www.torrentbytes.net/*"],
+    "js": ["jquery.js", "underscore.js", "tvdb.js", "backend.js", "runner.js"],
+    "css": [ "style.css" ]
+  }],
+  "background_page": "background.html",
+  "permissions": [
+    "tabs", "http://*/*", "http://www.thetvdb.com/",
+    "experimental", "privacy"
+  ]
+}
